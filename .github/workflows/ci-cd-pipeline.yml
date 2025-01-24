@@ -1,5 +1,5 @@
-# This file defines a GitHub Actions workflow for a CI/CD pipeline for a sample ML project
-name: CI/CD Workflow for Machine Learning Project
+# This file defines a GitHub Actions workflow for a CI/CD pipeline for the Autoencoder ML project
+name: CI/CD Workflow for Autoencoder
 
 # Trigger workflow on specific events
 on:
@@ -13,8 +13,8 @@ on:
 # Define the jobs in the workflow
 jobs:
   lint:
-    name: Code Linting
-    runs-on: windows-latest  # Using Windows environment
+    name: Lint Code
+    runs-on: windows-latest  # Use Windows environment
 
     steps:
       - name: Check out repository
@@ -23,19 +23,19 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: 3.8
 
-      - name: Install necessary tools
+      - name: Install flake8
         run: |
           python -m pip install --upgrade pip
           pip install flake8
 
-      - name: Execute linter
+      - name: Run linter
         run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 Autoencoder.py --count --select=E9,F63,F7,F82 --show-source --statistics
 
   test:
-    name: Unit Testing
+    name: Run Tests
     runs-on: windows-latest
 
     steps:
@@ -45,27 +45,26 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install keras numpy matplotlib
 
-      - name: Run unit tests
+      - name: Test script execution
         run: |
-          python -m unittest discover tests
+          python Autoencoder.py
 
   deploy:
-    name: Model Deployment
+    name: Deploy Model
     runs-on: windows-latest
-    needs: [lint, test]  # Deploy only if linting and tests pass
+    needs: [lint, test]
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Deploy the model
+      - name: Deploy to mock environment
         run: |
-          echo "Simulating deployment of the machine learning model."
-          # Insert actual deployment steps (e.g., Docker, Azure, AWS, etc.)
+          echo "Simulating deployment of the autoencoder model."
