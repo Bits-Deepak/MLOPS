@@ -1,5 +1,5 @@
-# This file defines a GitHub Actions workflow for a CI/CD pipeline for the Autoencoder ML project
-name: CI/CD Workflow for Autoencoder
+# This file defines a GitHub Actions workflow for a CI/CD pipeline for a sample ML project
+name: CI/CD Workflow for Machine Learning Project
 
 # Trigger workflow on specific events
 on:
@@ -13,8 +13,8 @@ on:
 # Define the jobs in the workflow
 jobs:
   lint:
-    name: Lint Code
-    runs-on: windows-latest  # Use Windows environment
+    name: Code Linting
+    runs-on: windows-latest  # Using Windows environment
 
     steps:
       - name: Check out repository
@@ -23,19 +23,23 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12.8
+          python-version: '3.11'
+          
+      - name: Install distutils
+        run: |
+          python -m pip install setuptools
 
-      - name: Install flake8
+      - name: Install necessary tools
         run: |
           python -m pip install --upgrade pip
           pip install flake8
 
-      - name: Run linter
+      - name: Execute linter
         run: |
-          flake8 Autoencoder.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
   test:
-    name: Run Tests
+    name: Unit Testing
     runs-on: windows-latest
 
     steps:
@@ -45,26 +49,39 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12.8
+          python-version: '3.11'
+          
+
+          
+      - name: Upgrade pip, setuptools, and wheel
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade setuptools wheel
+
+          
+      - name: Install distutils
+        run: |
+          python -m pip install setuptools
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install keras numpy matplotlib
+          pip install -r requirements.txt
 
-      - name: Test script execution
+      - name: Run unit tests
         run: |
-          python Autoencoder.py
+          python -m unittest discover tests
 
   deploy:
-    name: Deploy Model
+    name: Model Deployment
     runs-on: windows-latest
-    needs: [lint, test]
+    needs: [lint, test]  # Deploy only if linting and tests pass
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Deploy to mock environment
+      - name: Deploy the model
         run: |
-          echo "Simulating deployment of the autoencoder model."
+          echo "Simulating deployment of the machine learning model."
+          # Insert actual deployment steps (e.g., Docker, Azure, AWS, etc.)
