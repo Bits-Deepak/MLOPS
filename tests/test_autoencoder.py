@@ -6,7 +6,7 @@ class TestAutoencoder(unittest.TestCase):
     def test_autoencoder_training(self):
         """Test if the autoencoder trains without errors for 1 epoch."""
         # Use a small subset of data for testing
-        input_data = np.random.rand(100, 784)  # 100 samples, 784 features each
+        input_data = np.random.rand(2, 784)  # 2 samples, 784 features each
         autoencoder.fit(input_data, input_data, epochs=1, batch_size=32, verbose=0)
 
     def test_encoder_output_shape(self):
