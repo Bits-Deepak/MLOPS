@@ -6,8 +6,8 @@ class TestLogisticRegression(unittest.TestCase):
     def test_data_loading(self):
         """Test if the data loads correctly."""
         X_train, X_test, y_train, y_test = load_data()
-        self.assertEqual(X_train.shape[0], 120)  # 80% of 150 samples for training
-        self.assertEqual(X_test.shape[0], 30)   # 20% of 150 samples for testing
+        self.assertEqual(X_train.shape[0], 105)  # 70% of 150 samples for training
+        self.assertEqual(X_test.shape[0], 45)   # 30% of 150 samples for testing
 
     def test_model_training(self):
         """Test if the model trains without errors."""
